@@ -12,6 +12,10 @@ from utils import BLACK, CYAN, GRAY, GREEN, RED, WHITE
 # Position = namedtuple('Positon', 'x y')
 
 
+PLAYER_WIDTH = 4
+PLAYER_RADIUS = 5
+
+
 class Position(tuple):
     def __new__(cls, x, y):
         self = super().__new__(cls, (x, y))
@@ -36,8 +40,8 @@ class Position(tuple):
 
     def is_hit(self, x, y):
         return (
-            self.x - self.radius <= x <= self.x + self.radius
-            and self.y - self.radius <= y <= self.y + self.radius
+            self.x - PLAYER_RADIUS <= x <= self.x + PLAYER_RADIUS
+            and self.y - PLAYER_RADIUS <= y <= self.y + PLAYER_RADIUS
         )
 
 
@@ -46,8 +50,6 @@ Player = Position
 
 class GraphWar:
     LINE_WIDTH = 1
-    PLAYER_WIDTH = 4
-    PLAYER_RADIUS = 5
     PLOTING_STEP = 0.3
     # FONT = pygame.font.SysFont('DejaVu Math TeX Gyre', 20)
 
@@ -85,12 +87,9 @@ class GraphWar:
             self.board,
             team,
             self.geometric_to_pygame(position),
-            self.PLAYER_RADIUS,
-            self.PLAYER_WIDTH,
+            PLAYER_RADIUS,
+            PLAYER_WIDTH,
         )
-
-    def hit_player(self) -> None:
-        pass
 
     def plot(self, player, func):
         iter_r = arange(0, self.O.x, self.PLOTING_STEP)
