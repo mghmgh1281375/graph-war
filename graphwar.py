@@ -7,7 +7,7 @@ import pygame
 from numpy import *
 from pygame import KEYDOWN, QUIT, K_f, K_q
 
-from utils import BLACK, GREEN, RED, WHITE, GRAY, CYAN
+from utils import BLACK, CYAN, GRAY, GREEN, RED, WHITE
 
 # Position = namedtuple('Positon', 'x y')
 
@@ -24,7 +24,7 @@ class Position(tuple):
     @property
     def y(self):
         return self[1]
-    
+
     @property
     def radius(self):
         return 2
@@ -33,13 +33,12 @@ class Position(tuple):
         new_x = self.x + position.x
         new_y = self.y + position.y
         return self.__new__(self.__class__, new_x, new_y)
-    
+
     def is_hit(self, x, y):
         return (
             self.x - self.radius <= x <= self.x + self.radius
             and self.y - self.radius <= y <= self.y + self.radius
         )
-        
 
 
 Player = Position
@@ -105,7 +104,16 @@ class GraphWar:
             x = player.x + x
             y = player.y + y
 
-            pygame.draw.circle(self.board, BLACK, self.geometric_to_pygame(Position(x, y)), 1, 1)
+            pygame.draw.circle(
+                self.board, BLACK, self.geometric_to_pygame(Position(x, y)), 1, 1
+            )
+            pygame.display.flip()
+        else:
+            self.ploting = False
+
+        for x, y in zip(X, Y):
+            x = player.x + x
+            y = player.y + y
             for player in self.players:
                 if player.is_hit(x, y):
                     pygame.draw.line(
@@ -137,16 +145,6 @@ class GraphWar:
                         self.LINE_WIDTH,
                     )
 
-                    # pygame.draw.circle(self.board, RED, self.geometric_to_pygame(self.O), self.PLAYER_RADIUS, self.PLAYER_WIDTH)
-                    
-                    self.ploting = False
-                    break
-
-            pygame.display.flip()
-
-        else:
-            self.ploting = False
-
     def start(self):
 
         self.ploting = True
@@ -160,7 +158,7 @@ class GraphWar:
                 else:
                     if (e.type == KEYDOWN and e.key == K_f) and self.ploting:
                         # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
-                        self.plot(self.players[0], lambda x: x/x - 1)
+                        self.plot(self.players[0], lambda x: x / x - 1)
 
             pygame.display.flip()
 
