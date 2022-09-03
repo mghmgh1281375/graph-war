@@ -18,8 +18,7 @@ PLAYER_RADIUS = 5
 
 class Position(tuple):
     def __new__(cls, x, y):
-        self = super().__new__(cls, (x, y))
-        return self
+        return super().__new__(cls, (x, y))
 
     @property
     def x(self):
@@ -107,8 +106,7 @@ class GraphWar:
                 self.board, BLACK, self.geometric_to_pygame(Position(x, y)), 1, 1
             )
             pygame.display.flip()
-        else:
-            self.ploting = False
+        self.ploting = False
 
         for x, y in zip(X, Y):
             x = player.x + x
@@ -154,10 +152,9 @@ class GraphWar:
 
                 if e.type == QUIT or (e.type == KEYDOWN and e.key == K_q):
                     exit()
-                else:
-                    if (e.type == KEYDOWN and e.key == K_f) and self.ploting:
-                        # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
-                        self.plot(self.players[0], lambda x: x / x - 1)
+                elif (e.type == KEYDOWN and e.key == K_f) and self.ploting:
+                    # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
+                    self.plot(self.players[0], lambda x: x / x - 1)
 
             pygame.display.flip()
 
