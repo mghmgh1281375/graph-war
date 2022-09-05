@@ -1,5 +1,4 @@
 # from curses import KEY_ENTER
-from collections import namedtuple
 from itertools import chain
 
 import numpy as np
