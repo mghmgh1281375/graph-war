@@ -136,7 +136,8 @@ class GraphWar:
                     exit()
                 elif (e.type == KEYDOWN and e.key == K_f) and self.ploting:
                     # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
-                    self.plot(self.players[0], lambda x: x / x - 1)
+                    # self.plot(self.players[0], lambda x: 0*x + 5)
+                    self.plot(self.players[0], lambda x: 6*sin(x/5))
 
             pygame.display.flip()
 
