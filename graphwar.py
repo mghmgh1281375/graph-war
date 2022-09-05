@@ -14,7 +14,8 @@ from utils import BLACK, CYAN, GRAY, GREEN, RED, WHITE
 
 class GraphWar:
     LINE_WIDTH = 1
-    PLOTING_STEP = 0.3
+    PLOTING_STEP = 0.1
+    SCALE_FACTOR = 10
     # FONT = pygame.font.SysFont('DejaVu Math TeX Gyre', 20)
 
     def __init__(self) -> None:
