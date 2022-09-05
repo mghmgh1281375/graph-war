@@ -20,7 +20,7 @@ class GraphWar:
 
     def __init__(self) -> None:
         pygame.init()
-        self.board = pygame.display.set_mode((920, 720))
+        self.board = pygame.display.set_mode((720, 720))
         self.board.fill(WHITE)
         self.O = Position(self.board.get_width() / 2, self.board.get_height() / 2)
         pygame.draw.line(
