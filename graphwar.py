@@ -5,45 +5,11 @@ import numpy as np
 import pygame
 from numpy import *
 from pygame import KEYDOWN, QUIT, K_f, K_q
+from player import Player
+from position import Position
 
 from utils import BLACK, CYAN, GRAY, GREEN, RED, WHITE
 
-# Position = namedtuple('Positon', 'x y')
-
-
-PLAYER_WIDTH = 4
-PLAYER_RADIUS = 5
-
-
-class Position(tuple):
-    def __new__(cls, x, y):
-        return super().__new__(cls, (x, y))
-
-    @property
-    def x(self):
-        return self[0]
-
-    @property
-    def y(self):
-        return self[1]
-
-    @property
-    def radius(self):
-        return 2
-
-    def __add__(self, position):
-        new_x = self.x + position.x
-        new_y = self.y + position.y
-        return self.__new__(self.__class__, new_x, new_y)
-
-    def is_hit(self, x, y):
-        return (
-            self.x - PLAYER_RADIUS <= x <= self.x + PLAYER_RADIUS
-            and self.y - PLAYER_RADIUS <= y <= self.y + PLAYER_RADIUS
-        )
-
-
-Player = Position
 
 
 class GraphWar:
