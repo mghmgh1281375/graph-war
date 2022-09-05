@@ -49,14 +49,17 @@ class GraphWar:
     def geometric_to_pygame(self, geo_position):
         return Position(geo_position.x * self.SCALE_FACTOR + self.O.x, self.O.y - geo_position.y * self.SCALE_FACTOR)
 
-    def add_player(self, position, team) -> None:
-        self.players.append(position)
+    def pygame_to_geometric(self, pygame_position):
+        pass
+
+    def add_player(self, geo_position, team) -> None:
+        self.players.append(geo_position)
         pygame.draw.circle(
             self.board,
             team,
-            self.geometric_to_pygame(position),
-            PLAYER_RADIUS,
-            PLAYER_WIDTH,
+            self.geometric_to_pygame(geo_position),
+            Player.PLAYER_RADIUS,
+            Player.PLAYER_WIDTH,
         )
 
     def plot(self, player, func):
