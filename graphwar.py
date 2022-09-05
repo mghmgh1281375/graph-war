@@ -46,8 +46,8 @@ class GraphWar:
         self.add_player(geo_position=Player(14, -6), team=GRAY)
         self.add_player(geo_position=Player(-7, -15), team=GRAY)
 
-    def geometric_to_pygame(self, position):
-        return Position(position.x * 10 + self.O.x, self.O.y - position.y * 10)
+    def geometric_to_pygame(self, geo_position):
+        return Position(geo_position.x * self.SCALE_FACTOR + self.O.x, self.O.y - geo_position.y * self.SCALE_FACTOR)
 
     def add_player(self, position, team) -> None:
         self.players.append(position)
