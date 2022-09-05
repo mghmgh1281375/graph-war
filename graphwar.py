@@ -60,56 +60,69 @@ class GraphWar:
         )
 
     def plot(self, player, func):
-        iter_r = arange(0, self.O.x, self.PLOTING_STEP)
-        iter_l = arange(-self.PLOTING_STEP, -self.O.x, -self.PLOTING_STEP)
 
-        X = np.array(list(chain(*zip(iter_l, iter_r))))
-        X = np.array(list(iter_r))
+        iter_r = arange(player.x, self.O.x / self.SCALE_FACTOR, self.PLOTING_STEP)
+        iter_l = arange(player.x-self.PLOTING_STEP, -self.O.x / self.SCALE_FACTOR, -self.PLOTING_STEP)
+
+        X = array(list(chain(*zip(iter_l, iter_r))))
         Y = func(X)
 
+        C = func(player.x)
+        print(f'{C=} = func({player.x=})\t\t{player.y=}')
+        rmissle_hit = None
+        lmissle_hit = None
+
         for x, y in zip(X, Y):
-            x = player.x + x
-            y = player.y + y
+            x_translated = x
+            y_translated = y + (player.y - C)
+
+            if lmissle_hit is not None and x_translated < lmissle_hit.x:
+                continue
+            if rmissle_hit is not None and x_translated > rmissle_hit.x:
+                continue
+
 
             pygame.draw.circle(
-                self.board, BLACK, self.geometric_to_pygame(Position(x, y)), 1, 1
+                self.board, BLACK, self.geometric_to_pygame(geo_position=Position(x_translated, y_translated)), 1, 1
             )
+            for _player in filter(lambda p: p is not player, self.players):
+                if _player.is_hit(x_translated, y_translated):
+                    pygame.draw.line(
+                        self.board,
+                        RED,
+                        self.geometric_to_pygame(geo_position=_player),
+                        self.geometric_to_pygame(geo_position=_player + Position(1, 1)),
+                        self.LINE_WIDTH*4,
+                    )
+                    pygame.draw.line(
+                        self.board,
+                        RED,
+                        self.geometric_to_pygame(geo_position=_player),
+                        self.geometric_to_pygame(geo_position=_player + Position(-1, -1)),
+                        self.LINE_WIDTH*4,
+                    )
+                    pygame.draw.line(
+                        self.board,
+                        RED,
+                        self.geometric_to_pygame(geo_position=_player),
+                        self.geometric_to_pygame(geo_position=_player + Position(1, -1)),
+                        self.LINE_WIDTH*4,
+                    )
+                    pygame.draw.line(
+                        self.board,
+                        RED,
+                        self.geometric_to_pygame(geo_position=_player),
+                        self.geometric_to_pygame(geo_position=_player + Position(-1, 1)),
+                        self.LINE_WIDTH*4,
+                    )
+                    if _player.x >= player.x:
+                        rmissle_hit = Position(_player.x, _player.y)
+                    else:
+                        lmissle_hit = Position(_player.x, _player.y)
+
             pygame.display.flip()
         self.ploting = False
 
-        for x, y in zip(X, Y):
-            x = player.x + x
-            y = player.y + y
-            for player in self.players:
-                if player.is_hit(x, y):
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(player),
-                        self.geometric_to_pygame(player + Position(1, 1)),
-                        self.LINE_WIDTH,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(player),
-                        self.geometric_to_pygame(player + Position(-1, -1)),
-                        self.LINE_WIDTH,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(player),
-                        self.geometric_to_pygame(player + Position(1, -1)),
-                        self.LINE_WIDTH,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(player),
-                        self.geometric_to_pygame(player + Position(-1, 1)),
-                        self.LINE_WIDTH,
-                    )
 
     def start(self):
 
