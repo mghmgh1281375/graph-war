@@ -48,7 +48,7 @@ class GraphWar:
 
     def geometric_to_pygame(self, geo_position):
         return Position(geo_position.x * self.SCALE_FACTOR + self.O.x, self.O.y - geo_position.y * self.SCALE_FACTOR)
-
+    
     def pygame_to_geometric(self, pygame_position):
         pass
 
@@ -89,6 +89,7 @@ class GraphWar:
                 self.board, BLACK, self.geometric_to_pygame(geo_position=Position(x_translated, y_translated)), 1, 1
             )
             for _player in filter(lambda p: p is not player, self.players):
+                _player: Player
                 if _player.is_hit(x_translated, y_translated):
                     pygame.draw.line(
                         self.board,
@@ -139,8 +140,9 @@ class GraphWar:
                     exit()
                 elif (e.type == KEYDOWN and e.key == K_f) and self.ploting:
                     # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
+                    self.plot(self.players[0], lambda x: 10*sin((x / 9) - 0.5))
                     # self.plot(self.players[0], lambda x: 0*x + 5)
-                    self.plot(self.players[0], lambda x: 6*sin(x/5))
+                    # self.plot(self.players[0], lambda x: 6*sin(x/5))
 
             pygame.display.flip()
 
