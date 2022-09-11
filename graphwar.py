@@ -1,5 +1,5 @@
 # from curses import KEY_ENTER
-from itertools import chain
+from itertools import chain, zip_longest
 
 import numpy as np
 import pygame
@@ -58,8 +58,38 @@ class GraphWar:
             self.board,
             team,
             self.geometric_to_pygame(geo_position),
-            Player.PLAYER_RADIUS,
-            Player.PLAYER_WIDTH,
+            Player.PLAYER_RADIUS*self.SCALE_FACTOR,
+            Player.PLAYER_WIDTH*self.SCALE_FACTOR,
+        )
+
+    def draw_cross(self, player):
+        pygame.draw.line(
+            self.board,
+            RED,
+            self.geometric_to_pygame(geo_position=player),
+            self.geometric_to_pygame(geo_position=player + Position(1, 1)),
+            self.LINE_WIDTH*4,
+        )
+        pygame.draw.line(
+            self.board,
+            RED,
+            self.geometric_to_pygame(geo_position=player),
+            self.geometric_to_pygame(geo_position=player + Position(-1, -1)),
+            self.LINE_WIDTH*4,
+        )
+        pygame.draw.line(
+            self.board,
+            RED,
+            self.geometric_to_pygame(geo_position=player),
+            self.geometric_to_pygame(geo_position=player + Position(1, -1)),
+            self.LINE_WIDTH*4,
+        )
+        pygame.draw.line(
+            self.board,
+            RED,
+            self.geometric_to_pygame(geo_position=player),
+            self.geometric_to_pygame(geo_position=player + Position(-1, 1)),
+            self.LINE_WIDTH*4,
         )
 
     def plot(self, player, func):
@@ -67,7 +97,10 @@ class GraphWar:
         iter_r = arange(player.x, self.O.x / self.SCALE_FACTOR, self.PLOTING_STEP)
         iter_l = arange(player.x-self.PLOTING_STEP, -self.O.x / self.SCALE_FACTOR, -self.PLOTING_STEP)
 
-        X = array(list(chain(*zip(iter_l, iter_r))))
+        X = array(list(chain(*zip_longest(iter_l, iter_r))), dtype='float64')
+
+        nan_mask = np.isnan(X)
+        X = X[~nan_mask]
         Y = func(X)
 
         C = func(player.x)
@@ -91,34 +124,7 @@ class GraphWar:
             for _player in filter(lambda p: p is not player, self.players):
                 _player: Player
                 if _player.is_hit(x_translated, y_translated):
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(geo_position=_player),
-                        self.geometric_to_pygame(geo_position=_player + Position(1, 1)),
-                        self.LINE_WIDTH*4,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(geo_position=_player),
-                        self.geometric_to_pygame(geo_position=_player + Position(-1, -1)),
-                        self.LINE_WIDTH*4,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(geo_position=_player),
-                        self.geometric_to_pygame(geo_position=_player + Position(1, -1)),
-                        self.LINE_WIDTH*4,
-                    )
-                    pygame.draw.line(
-                        self.board,
-                        RED,
-                        self.geometric_to_pygame(geo_position=_player),
-                        self.geometric_to_pygame(geo_position=_player + Position(-1, 1)),
-                        self.LINE_WIDTH*4,
-                    )
+                    self.draw_cross(_player)
                     if _player.x >= player.x:
                         rmissle_hit = Position(_player.x, _player.y)
                     else:
@@ -140,7 +146,7 @@ class GraphWar:
                     exit()
                 elif (e.type == KEYDOWN and e.key == K_f) and self.ploting:
                     # self.plot(self.players[0], lambda x: sin((x / 4) - 0.5))
-                    self.plot(self.players[0], lambda x: 10*sin((x / 9) - 0.5))
+                    self.plot(self.players[0], lambda x: 10*sin((x / 1) - 0.5))
                     # self.plot(self.players[0], lambda x: 0*x + 5)
                     # self.plot(self.players[0], lambda x: 6*sin(x/5))
 
