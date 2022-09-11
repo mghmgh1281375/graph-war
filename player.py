@@ -25,7 +25,7 @@ from position import Position
 
 class Player(Position):
     PLAYER_WIDTH = 4
-    PLAYER_RADIUS = 5
+    PLAYER_RADIUS = 0.5
 
     def is_hit(self, x, y):
         return ((x-self.x)**2 + (y-self.y)**2) <= self.PLAYER_RADIUS**2
