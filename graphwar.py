@@ -42,7 +42,7 @@ class GraphWar:
 
         self.add_player(geo_position=Player(-20, 5), team=CYAN)
         self.add_player(geo_position=Player(-13, 5), team=GRAY)
-        self.add_player(geo_position=Player(25, 15), team=GRAY)
+        self.add_player(geo_position=Player(25.5, 15), team=GRAY)
         self.add_player(geo_position=Player(14, -6), team=GRAY)
         self.add_player(geo_position=Player(-7, -15), team=GRAY)
 
@@ -104,7 +104,7 @@ class GraphWar:
         Y = func(X)
 
         C = func(player.x)
-        print(f'{C=} = func({player.x=})\t\t{player.y=}')
+        print(f'{C=} = func({player.x=})\t{player.y=}')
         rmissle_hit = None
         lmissle_hit = None
 
@@ -125,10 +125,10 @@ class GraphWar:
                 _player: Player
                 if _player.is_hit(x_translated, y_translated):
                     self.draw_cross(_player)
-                    if _player.x >= player.x:
-                        rmissle_hit = Position(_player.x, _player.y)
-                    else:
-                        lmissle_hit = Position(_player.x, _player.y)
+                    # if _player.x >= player.x:
+                    #     rmissle_hit = Position(_player.x, _player.y)
+                    # else:
+                    #     lmissle_hit = Position(_player.x, _player.y)
 
             pygame.display.flip()
         self.ploting = False
